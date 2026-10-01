@@ -19,7 +19,8 @@ has run `git config core.hooksPath .githooks`.
 3. `CONVENTIONS.md`: how docs, data, numbers and the artifact are written.
 4. `../private/hobbyhero/OPEN-ITEMS.md`: every decision so far, dated, with the open questions.
 5. `../private/hobbyhero/BACKLOG.md`: ideas and the long-game direction.
-6. The current SPEC (`SPEC-artifact-v0.md`).
+6. The current SPECs: `SPEC-artifact-v0.md` (the lab page) and `SPEC-site-edition.md` (its
+   site edition, proposed 2026-10-01).
 
 ## Private notes
 
