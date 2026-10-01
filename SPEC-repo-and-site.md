@@ -87,7 +87,8 @@ v3 is hosted, and move the domain's DNS to Cloudflare. None of this blocks C.
 2. **Repo setup** (Cowork writes, Claude Code commits): `.gitignore` per §2, `LICENSE`, the
    leak test, a README without the known-bad "93.8%" claim (item 10). No pipeline changes.
 3. **First site edition:** today's lab page as an installable app on the play host. This
-   proves the build and deploy path before the game exists.
+   proves the build and deploy path before the game exists. Plan: `SPEC-site-edition.md`
+   (proposed 2026-10-01).
 4. **Player ratings** — its own SPEC with a pre-registered test: ratings count as real only if
    lineups built from them improve the Poisson engine out of sample.
 5. **The game**, in phases, each playable on its own: single game with lines → season replay
