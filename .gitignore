@@ -1,0 +1,25 @@
+# Hobby Hero is a public repo. What stays out, and why: SPEC-repo-and-site.md §2.
+# Private notes (OPEN-ITEMS, BACKLOG, PROJECT-CATALOG, handovers) live in ../private/hobbyhero/.
+# Run `python tests/leak_check.py` before every push.
+
+# secrets
+.env
+
+# private data and history: rebuilt locally by the pipeline, never published
+/data/
+/archive/
+/reports/
+/logs/
+
+# builds (reproducible from source)
+/artifact/snapshot.json
+/artifact/dist/
+
+# python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# tooling
+.wrangler/
+node_modules/

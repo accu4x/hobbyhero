@@ -1,0 +1,4 @@
+# Every text blob is LF, whatever core.autocrlf a machine has set. The pre-push hook is a shell
+# script and breaks on CRLF.
+* text=auto eol=lf
+*.png binary

@@ -1,0 +1,7 @@
+# Hobby Hero pipeline dependencies
+# Install:  pip install -r requirements.txt
+pandas>=2.0
+numpy>=1.24
+xgboost>=2.0
+scikit-learn>=1.3
+requests>=2.28
