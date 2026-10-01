@@ -1,7 +1,7 @@
 # SPEC: own repo, then a site (option C)
 
-_Drafted 2026-09-30 (Cowork). Status: **approved by Dan 2026-09-30; §4 steps 1–2 done in Cowork,
-git setup handed to Claude Code.**_
+_Drafted 2026-09-30 (Cowork). Status: **approved by Dan 2026-09-30; §4 steps 1–2 done, and the
+repo was pushed the same day. Step 3 is next.**_
 
 ## 1. Decision
 
@@ -28,12 +28,15 @@ one edition (the model lab); the game becomes a second edition. See `OPEN-ITEMS.
 ## 2. The repo
 
 - **`workspace/hobbyhero/` becomes the public repo.** No new folder, no parallel structure.
+  *Done 2026-09-30:* <https://github.com/accu4x/hobbyhero>.
 - **`source/repos/hobbyhero-app/` becomes legacy.** It stays as it is, reference only (team
   colours, the C# Monte Carlo, UI ideas). It is never made public: its history holds the v3
   login and Shopify code, and auditing every commit isn't worth it.
 - **Git is Claude Code's job** (`../AGENTS.md`). Cowork writes the files below and hands off;
-  Claude Code runs `git init`, creates the GitHub repo and pushes.
-- **Name:** `accu4x/hobbyhero` (Dan: "my typical github"; the name itself is assumed).
+  Claude Code runs `git init`, creates the GitHub repo and pushes. *Done 2026-09-30.* From
+  here on, every change goes through a branch and a pull request, and Dan merges.
+- **Name:** `accu4x/hobbyhero` (Dan: "my typical github"; ~~the name itself is assumed~~
+  confirmed by Dan 2026-09-30).
 - **Pattern: Kestrel Nine.** Private notes live outside the repo in `../private/hobbyhero/` and
   are never copied in. A leak check fails closed and runs before every push.
 

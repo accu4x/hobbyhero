@@ -7,7 +7,7 @@ one dataset. The **Claude artifact** stays as the model lab; a **game** (set lin
 real season against the real team's result, forecast) will ship as an installable app at
 `play.latentmirror.com/hobby-hero`, as Kestrel Nine does. See `SPEC-repo-and-site.md`.
 
-**This is a public repo** (`accu4x/hobbyhero`, being set up 2026-09-30). Run
+**This is a public repo** (<https://github.com/accu4x/hobbyhero>, since 2026-09-30). Run
 `python tests/leak_check.py` before every push. The `pre-push` hook does it for you once a clone
 has run `git config core.hooksPath .githooks`.
 
@@ -46,10 +46,10 @@ because the pipeline writes there, but Git ignores it.
   Montreal isn't over-represented.
 - **Secrets stay out.** Nothing from any archived `config.json` goes near an artifact, a doc or
   a commit.
-- **Git:** ~~this folder is not a repo yet (2026-09-23).~~ Becoming the public repo
-  `accu4x/hobbyhero` (2026-09-30); Claude Code sets it up from
-  `../private/hobbyhero/HANDOVER-repo-setup-2026-09-30.md`. A Cowork session never runs git
-  (`../AGENTS.md`). Repo work belongs to Claude Code.
+- **Git:** ~~this folder is not a repo yet (2026-09-23).~~ The public repo `accu4x/hobbyhero`
+  since 2026-09-30. Every change goes through a branch and a pull request, and merging is
+  Dan's call. A Cowork session never runs git (`../AGENTS.md`). Repo work belongs to Claude
+  Code.
 
 ## Two source folders
 
