@@ -1,0 +1,5 @@
+# Build and test tools for the site edition. The pipeline does not need them.
+# Install:  pip install -r requirements-dev.txt   then: python -m playwright install chromium
+Pillow>=10.0        # artifact/build.py --site draws the app icons from the logo
+playwright>=1.45    # tests/smoke_site.py
+pytest>=8.0

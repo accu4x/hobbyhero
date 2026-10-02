@@ -1,7 +1,19 @@
-// The one place that knows where the snapshot comes from. The artifact embeds it in the page;
-// the site edition will fetch it as files and return the same object (SPEC-site-edition.md §4).
+// The one place that knows where the snapshot comes from. The artifact embeds it in the page.
+// The site edition fetches it as files, split by season to keep each one small, and puts it
+// back together into the same object (SPEC-site-edition.md §4; build.py checks the round trip).
 async function loadSnapshot() {
-  return JSON.parse(document.getElementById("snapshot").textContent);
+  const embedded = document.getElementById("snapshot");
+  if (embedded) return JSON.parse(embedded.textContent);
+  const get = async name => {
+    const res = await fetch(`data/${name}.json`);
+    if (!res.ok) throw new Error(`data/${name}.json: HTTP ${res.status}`);
+    return res.json();
+  };
+  const snap = await get("core");
+  const seasons = await Promise.all(snap.season_files.map(get));
+  snap.states = Object.assign({}, ...seasons.map(s => s.states));
+  snap.games = seasons.flatMap(s => s.games);
+  return snap;
 }
 
 (async () => {
@@ -483,4 +495,7 @@ async function loadSnapshot() {
                        : day[day.length - 1];
     if (g) loadGame(g, false);
   }
-})();
+})().catch(err => {
+  document.getElementById("dateNote").textContent = "The page's data could not be loaded. Check the connection and reload.";
+  throw err;
+});

@@ -1,7 +1,7 @@
 # SPEC: the site edition (the lab page as an installable app)
 
-_Status: **approved by Dan 2026-10-01 (he merged it and said "start phase 1"). Phase 1 built
-2026-10-01 (see *Build log*); Phases 2 and 3 not started.** This is step 3 of
+_Status: **approved by Dan 2026-10-01 (he merged it and said "start phase 1"). Phases 1 and 2
+built 2026-10-01 (see *Build log*); Phase 3, the deploy, not started.** This is step 3 of
 `SPEC-repo-and-site.md` §4. Dan answered the five open choices on 2026-10-01 (§2)._
 
 ## 1. Goal
@@ -69,8 +69,8 @@ site build fails if the shell contains an inline script, an inline style or a `s
 ```
 dist/site/_headers
 dist/site/hobby-hero/
-  index.html  app.js  app.css  sw.js  manifest.webmanifest
-  icon-192.png  icon-512.png  icon-maskable-512.png  apple-touch-icon.png
+  index.html  app.css  fonts.css  engine.js  app.js  site.js  sw.js  manifest.webmanifest
+  logo.webp  icon-192.png  icon-512.png  icon-maskable-512.png  apple-touch-icon.png
   fonts/      Montserrat and Open Sans, woff2, with their licence texts
   data/core.json            models, teams, dates, schedule, metrics, levers, parity (~490 KB)
   data/<season>.json        that season's team states and games (~675 KB each)
@@ -89,14 +89,19 @@ dist/site/hobby-hero/
   file plus `_headers`, the whole build is precached, old caches are deleted on activate, and
   `sw.js` itself is served `no-cache`. Cache prefix `hh-`.
 - **Headers.** Kestrel Nine's policy plus `font-src 'self'`. The only outside script allowed is
-  the Cloudflare Web Analytics beacon the zone injects, as on Kestrel Nine.
+  the Cloudflare Web Analytics beacon the zone injects, as on Kestrel Nine. *Phase 2:* `data:`
+  images are not allowed either, since nothing on the page needs one.
+- **Updates.** A new deploy is fetched in the background and shown on the next visit. An open
+  page is not reloaded under the reader.
 - **Storage.** The page's `localStorage` key (`hh-v4`) works on the site as it is.
 
 ### The benchmark label
 
 `src/export/artifact_snapshot.py` writes `meta.benchmark` as "Closing market moneyline,
 de-vigged (comparison only, never an input)". The site build fails if any file in it names an
-odds source or a sportsbook; the list of names lives in the test. Per-game closing lines stay
+odds source or a sportsbook; ~~the list of names lives in the test~~ the list of names is
+`BANNED_NAMES` in `build.py` (*corrected in Phase 2*: the build is what refuses, so the list
+sits with it). Per-game closing lines stay
 in the data (Dan, 2026-09-30, `SPEC-repo-and-site.md` §2).
 
 ### Deploy
@@ -168,6 +173,35 @@ Each is its own pull request; Dan merges.
   matched. Removing one of the new rules on purpose made the same check fail. After the
   re-export the only difference is the build date in the footer.
 - **Cut from this phase:** nothing. **Found:** the parity fixtures correction in §4.
+
+### Phase 2 (2026-10-01)
+
+- **Shipped.** `python artifact/build.py --site` writes `artifact/dist/site/`: 26 files,
+  about 4.3 MB before compression. `tests/smoke_site.py`, `wrangler.jsonc` and
+  `requirements-dev.txt` are new. `CONVENTIONS.md`, *The artifact*, is amended.
+- **Fonts.** Dan approved the download on 2026-10-01 ("Yes, download all six"). The four
+  `.woff2` files are the ones the artifact page fetches from Google Fonts today (Montserrat
+  Latin, and Open Sans Latin, symbols and math: 165 KB together), with the two licence texts.
+  `fonts.css` keeps Google's character ranges and rule order.
+- **Data.** `core.json` (502 KB) and five season files (about 690 KB each), every one under the
+  2 MB limit. `core.json` lists the season files, and `loadSnapshot()` fetches them together.
+  The build puts the parts back together itself and refuses to write anything if the result
+  differs from the snapshot in content or order.
+- **Icons** are drawn from the logo at build time. The logo is 192 px, so the 512 px icons are
+  enlarged from it and are slightly soft. A larger logo file would fix that.
+- **Checked.** `tests/smoke_site.py` passes its 13 checks under the real headers: the policy is
+  served with no inline allowance, the engine check passes on the page, a fixed matchup shows
+  the same 20 fields as the artifact build, script-set styles survive, the four fonts load from
+  this origin, the service worker installs and takes control, the manifest and icons are
+  served, no request leaves the origin, and the page restarts with the server stopped and the
+  network off. `tests/leak_check.py --dir artifact/dist/site` is clean. Parity passes.
+- **Checked once, by hand-run script:** the site and the artifact (wrapped in a standards-mode
+  document) rendered pixel for pixel the same at 1280 px and 390 px in three views each.
+- **The checks can fail.** An inline style, an inline script and an outside image planted in
+  the built page failed the smoke test; a named source in the data and a file over 2 MB each
+  made the build refuse.
+- **Not checked:** the browser's install prompt itself (headless Chromium does not show one),
+  and anything on Cloudflare: the route, the real headers and the analytics beacon are Phase 3.
 
 ## 8. Open
 

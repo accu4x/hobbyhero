@@ -88,6 +88,10 @@ Latent Mirror (`workspace/latent-mirror/`) holds only pointers to this project a
 - `artifact/`: `snapshot.json`, `src/` (`template.html`, `app.css`, `app.js`, `engine.js`,
   `parity_test.cjs`, `logo.datauri`), `build.py`,
   and the built page `dist/hobby-hero.html`. Rebuild steps: `SPEC-artifact-v0.md`, *Build log*.
+  The site edition (`SPEC-site-edition.md`) adds `src/sw.js`, `src/site.js`,
+  `src/site-headers.txt` and `src/fonts/`; `python artifact/build.py --site` writes
+  `dist/site/`, `python tests/smoke_site.py` checks it, and `wrangler.jsonc` deploys it. A
+  deploy publishes, so ask Dan before each one.
 
 ## Recording
 
