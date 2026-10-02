@@ -20,7 +20,7 @@ has run `git config core.hooksPath .githooks`.
 4. `../private/hobbyhero/OPEN-ITEMS.md`: every decision so far, dated, with the open questions.
 5. `../private/hobbyhero/BACKLOG.md`: ideas and the long-game direction.
 6. The current SPECs: `SPEC-artifact-v0.md` (the lab page) and `SPEC-site-edition.md` (its
-   site edition, proposed 2026-10-01).
+   site edition, live at `play.latentmirror.com/hobby-hero` since 2026-10-01).
 
 ## Private notes
 
