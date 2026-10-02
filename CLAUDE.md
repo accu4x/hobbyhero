@@ -85,7 +85,8 @@ Latent Mirror (`workspace/latent-mirror/`) holds only pointers to this project a
 - `reports/`: backtest results and milestone assessments. Private: Git ignores it.
 - `src/export/`: `artifact_snapshot.py` (trains the Poisson engine and writes `artifact/snapshot.json`)
   and `team_colors.py`.
-- `artifact/`: `snapshot.json`, `src/` (`engine.js`, `parity_test.cjs`, `template.html`, `logo.datauri`), `build.py`,
+- `artifact/`: `snapshot.json`, `src/` (`template.html`, `app.css`, `app.js`, `engine.js`,
+  `parity_test.cjs`, `logo.datauri`), `build.py`,
   and the built page `dist/hobby-hero.html`. Rebuild steps: `SPEC-artifact-v0.md`, *Build log*.
 
 ## Recording
