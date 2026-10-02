@@ -1,7 +1,8 @@
 # SPEC: the site edition (the lab page as an installable app)
 
-_Status: **approved by Dan 2026-10-01 (he merged it and said "start phase 1"). Phases 1 and 2
-built 2026-10-01 (see *Build log*); Phase 3, the deploy, not started.** This is step 3 of
+_Status: **done. Live at <https://play.latentmirror.com/hobby-hero/> since 2026-10-01** (see
+*Build log*). Approved by Dan 2026-10-01 (he merged it and said "start phase 1"); all three
+phases landed the same day. This is step 3 of
 `SPEC-repo-and-site.md` §4. Dan answered the five open choices on 2026-10-01 (§2)._
 
 ## 1. Goal
@@ -203,6 +204,23 @@ Each is its own pull request; Dan merges.
 - **Not checked:** the browser's install prompt itself (headless Chromium does not show one),
   and anything on Cloudflare: the route, the real headers and the analytics beacon are Phase 3.
 
+### Phase 3 (2026-10-01)
+
+- **Deployed** by Dan's word ("deploy hobby hero"), from his machine with `npx wrangler deploy`,
+  after he merged Phase 2. Worker `hobby-hero`, route `play.latentmirror.com/hobby-hero*`,
+  25 assets, built from `main` with the same cache name as the Phase 2 build.
+- **Before the deploy,** on the merged `main`: parity, `leak_check.py --dir`, and all 13 smoke
+  checks passed. The path returned 522 until then.
+- **§7 against the live URL**, headless: the fixed matchup shows the same 20 fields as the
+  artifact build; the engine check passes; the fonts load; the service worker installs and takes
+  control; the page starts with the network off after one visit; no console error or policy
+  violation; the only request off the origin is the Cloudflare analytics beacon. The headers
+  are served as written, `sw.js` is `no-cache`, and `/hobby-hero` redirects to `/hobby-hero/`.
+  Over the wire the data is about 1.6 MB compressed. Kestrel Nine, on the same host, still
+  answers.
+- **Not checked:** the browser's install prompt (headless Chromium shows none). Try it once in
+  a real browser.
+
 ## 8. Open
 
 - **Staleness. Pushback to keep (Claude, 2026-10-01):** the snapshot's last game is 2026-06-14
@@ -210,5 +228,8 @@ Each is its own pull request; Dan merges.
   shows last season's states against this season's schedule, and falls further behind each
   day. The artifact has the same gap; an installable app at a public address makes it more
   visible. Decide before linking the site from anywhere whether a manual rebuild-and-deploy
-  routine is enough, or whether the refresh in `BACKLOG.md` comes first. Dan has not given a
-  position on this.
+  routine is enough, or whether the refresh in `BACKLOG.md` comes first. ~~Dan has not given a
+  position on this.~~ **Dan, 2026-10-01:** ship now and "add a season refresh in the
+  backlog". It is there (`BACKLOG.md`, *Season refresh for the site edition*); its cadence is
+  not decided. Until it runs, the site shows last season's form against this season's
+  schedule, and the page says so in its own words.

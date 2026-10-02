@@ -14,9 +14,13 @@ All editions are built from one dataset written by the Python pipeline in this r
 | Edition | Where | Status |
 |---|---|---|
 | Model lab | A Claude artifact: matchups, a look-back over past games, the 2026-27 schedule | Live |
-| Game | An installable app at `play.latentmirror.com/hobby-hero`: set your lines, replay a real season against the real team's result, forecast the future | Planned |
+| Model lab, installable | The same page as an app that works offline: [play.latentmirror.com/hobby-hero](https://play.latentmirror.com/hobby-hero/) | Live since 2026-10-01 |
+| Game | At the same address, later: set your lines, replay a real season against the real team's result, forecast the future | Planned |
 
-Plan and rationale: `SPEC-repo-and-site.md`.
+Plan and rationale: `SPEC-repo-and-site.md` and `SPEC-site-edition.md`.
+
+The data on both pages currently ends with the 2025-26 season; 2026-27 games show pre-season
+estimates until the next refresh.
 
 ## Run the pipeline
 
