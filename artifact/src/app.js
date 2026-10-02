@@ -1,5 +1,11 @@
-(() => {
-  const snap = JSON.parse(document.getElementById("snapshot").textContent);
+// The one place that knows where the snapshot comes from. The artifact embeds it in the page;
+// the site edition will fetch it as files and return the same object (SPEC-site-edition.md §4).
+async function loadSnapshot() {
+  return JSON.parse(document.getElementById("snapshot").textContent);
+}
+
+(async () => {
+  const snap = await loadSnapshot();
   const E = HHEngine;
   const $ = id => document.getElementById(id);
   const tl = E.timeline(snap);
@@ -78,9 +84,11 @@
     const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
     return lum < 0.05 ? `color-mix(in srgb, #${hex} 50%, var(--hh-ice))` : `#${hex}`;
   }
-  function chipHtml(t) {
-    const c = tInfo(t).colors;
-    return `<span class="chip" style="background:${c.bg};color:${c.fg};--chip-accent:${c.accent}">${t}</span>`;
+  // Markup carries no style attribute (the site edition's policy forbids them), so a chip
+  // written as HTML is coloured afterwards, through the same styleChip as every other chip.
+  const chipHtml = t => `<span class="chip" data-team="${t}">${t}</span>`;
+  function paintChips(box) {
+    for (const el of box.querySelectorAll(".chip[data-team]")) styleChip(el, el.dataset.team);
   }
 
   function fillSelects() {
@@ -181,7 +189,7 @@
     const list = $("toplist"); list.innerHTML = "";
     for (const c of top) {
       const li = document.createElement("li");
-      li.innerHTML = `<span class="num"></span><span class="meter"><i></i></span><span class="num" style="text-align:right"></span>`;
+      li.innerHTML = `<span class="num"></span><span class="meter"><i></i></span><span class="num ta-right"></span>`;
       li.children[0].textContent = c.i === c.j ? `${c.j}–${c.i}*` : `${c.j}–${c.i}`;
       li.children[1].firstChild.style.width = `${(100 * c.p / top[0].p).toFixed(1)}%`;
       li.children[2].textContent = pct(c.p, 1);
@@ -191,18 +199,21 @@
     const N = 7, gmax = top[0].p;
     let html = `<caption>Chance of each score after regulation and overtime, ${state.B} across, ${state.A} down. * = level, decided in a shootout.</caption><tr><th></th>`;
     for (let j = 0; j < N; j++) html += `<th scope="col">${j}</th>`;
-    html += `<th scope="col" class="micro" style="text-align:left">${state.B}</th></tr>`;
+    html += `<th scope="col" class="micro ta-left">${state.B}</th></tr>`;
     for (let i = 0; i < N; i++) {
       html += `<tr><th scope="row">${i}</th>`;
       for (let j = 0; j < N; j++) {
         const p = r.grid[i][j], a = Math.round(6 + 72 * p / gmax);
         const txt = p >= 0.01 ? (100 * p).toFixed(0) : "";
-        html += `<td style="background: color-mix(in srgb, var(--hh-ice-line) ${a}%, var(--hh-sunken))" title="${state.B} ${j}, ${state.A} ${i}: ${pct(p, 1)}">${txt}</td>`;
+        html += `<td data-shade="${a}" title="${state.B} ${j}, ${state.A} ${i}: ${pct(p, 1)}">${txt}</td>`;
       }
       html += "</tr>";
     }
     html += `<tr><th class="micro">${state.A}</th></tr>`;
     $("grid").innerHTML = html;
+    for (const td of $("grid").querySelectorAll("td[data-shade]")) {
+      td.style.background = `color-mix(in srgb, var(--hh-ice-line) ${td.dataset.shade}%, var(--hh-sunken))`;
+    }
     const ov = state.override;
     if (ov.A?.kind === "main" || ov.B?.kind === "main") {
       $("overrideNote").hidden = false;
@@ -277,6 +288,7 @@
         <button type="button" class="ghost load" data-s="${sched.games.indexOf(g)}">Load</button>
       </div>`;
     }).join("");
+    paintChips(box);
     $("dayNote").textContent = `${list.length} game${list.length > 1 ? "s" : ""} scheduled. Pre-season estimates; results come in when the page is rebuilt with played games.`;
     box.querySelectorAll("button.load").forEach(b => b.addEventListener("click", () => loadScheduled(sched.games[+b.dataset.s])));
   }
@@ -303,7 +315,7 @@
         mCell = `<span class="v">${mf} ${pct(mp)}</span><span class="s">${a} ${ml(g[ix.ml_away])} · ${h} ${ml(g[ix.ml_home])}</span>`;
       }
       const ot = g[ix.outcome] === "REG" ? "" : ` (${g[ix.outcome]})`;
-      const po = g[ix.type] === 3 ? ` <span class="micro" style="color:var(--hh-red-bright)">Playoffs</span>` : "";
+      const po = g[ix.type] === 3 ? ` <span class="micro playoffs">Playoffs</span>` : "";
       const isCur = state.game === `${g[ix.date]}-${h}` || (!state.game && state.A === h && state.B === a);
       return `<div class="game${isCur ? " current" : ""}">
         <div class="who">${chipHtml(a)}<span class="at2">at</span>${chipHtml(h)}${po}</div>
@@ -314,6 +326,7 @@
       </div>`;
     });
     box.innerHTML = rows.join("");
+    paintChips(box);
     $("dayNote").textContent = `${list.length} game${list.length > 1 ? "s" : ""}. Model favourite won ${hits} of ${list.length}` +
       (withM ? `; market favourite won ${mhits} of ${withM}.` : ".");
     box.querySelectorAll("button.load").forEach(b => b.addEventListener("click", () => loadGame(snap.games[+b.dataset.g])));

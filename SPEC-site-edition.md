@@ -1,8 +1,8 @@
 # SPEC: the site edition (the lab page as an installable app)
 
-_Status: **proposed 2026-10-01; nothing built.** This is step 3 of `SPEC-repo-and-site.md` §4.
-Dan approved the outline and answered the five open choices on 2026-10-01 (§2). The build waits
-for his OK on this spec._
+_Status: **approved by Dan 2026-10-01 (he merged it and said "start phase 1"). Phase 1 built
+2026-10-01 (see *Build log*); Phases 2 and 3 not started.** This is step 3 of
+`SPEC-repo-and-site.md` §4. Dan answered the five open choices on 2026-10-01 (§2)._
 
 ## 1. Goal
 
@@ -72,13 +72,15 @@ dist/site/hobby-hero/
   index.html  app.js  app.css  sw.js  manifest.webmanifest
   icon-192.png  icon-512.png  icon-maskable-512.png  apple-touch-icon.png
   fonts/      Montserrat and Open Sans, woff2, with their licence texts
-  data/core.json            models, teams, dates, schedule, metrics, levers (~300 KB)
+  data/core.json            models, teams, dates, schedule, metrics, levers, parity (~490 KB)
   data/<season>.json        that season's team states and games (~675 KB each)
 ```
 
 - **Data.** All files load in parallel at start, because the scoreboard spans every season.
-  Loading a season on demand is a later optimisation and not needed here. The parity fixtures
-  stay out of the site build; `parity_test.cjs` reads them from `snapshot.json`.
+  Loading a season on demand is a later optimisation and not needed here. ~~The parity fixtures
+  stay out of the site build; `parity_test.cjs` reads them from `snapshot.json`.~~
+  *Corrected 2026-10-01 (Phase 1):* the page runs the engine check on load and reports the
+  result in its footer, so the fixtures (188 KB) ship on the site too, inside `core.json`.
 - **Fonts.** The two families' woff2 files (Latin subset) and their SIL Open Font License texts
   are committed under `artifact/src/fonts/`. They are downloaded once, from the fonts' official
   releases, with Dan's OK at that point.
@@ -141,6 +143,31 @@ Each is its own pull request; Dan merges.
   beacon.
 - `leak_check.py --dir` is clean on the build, and no file names an odds source or a sportsbook.
 - The artifact build is still one self-contained file and still passes parity.
+
+## Build log
+
+### Phase 1 (2026-10-01)
+
+- **Shipped.** `template.html` is the page shell only; the style is `src/app.css` and the app
+  script is `src/app.js`. `build.py` puts them back, so the artifact is still one file. The
+  pure move was committed on its own: that build matched the previous one line for line,
+  blank lines aside.
+- **No `style=` left.** The five in the markup became classes, listed at the end of
+  `app.css`. Of the five the script wrote: three became classes, team chips are coloured
+  after insertion by the existing `styleChip`, and the score grid's shading is set through
+  the element's style object. Both are allowed under the site policy, which forbids the
+  attribute in markup and not styles set from script.
+- **The loader** is `loadSnapshot()` at the top of `app.js`. It has the artifact's path only;
+  the site path arrives with its test in Phase 2.
+- **The label.** The export writes "Closing market moneyline". Re-running it on unchanged
+  data gave the same snapshot apart from `meta.built_at` and that label (same model hash).
+- **Checked.** Parity passes (393 rows, 46 models). The old and new builds were rendered
+  headless at 1280 px and 390 px through six views each (today's schedule, a playoff day, a
+  regular day, the off-season, a loaded game, all seasons with sides swapped on neutral
+  ice): every element's position, size and computed style, the page text and the pixels
+  matched. Removing one of the new rules on purpose made the same check fail. After the
+  re-export the only difference is the build date in the footer.
+- **Cut from this phase:** nothing. **Found:** the parity fixtures correction in §4.
 
 ## 8. Open
 

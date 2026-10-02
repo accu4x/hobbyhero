@@ -42,7 +42,7 @@
       <label class="micro" for="teamA" id="labelA">Home</label>
       <select id="teamA"></select>
     </div>
-    <div class="field" style="flex: 0 0 auto">
+    <div class="field venue">
       <span class="micro" id="venueLabel">Venue</span>
       <div class="seg" role="group" aria-labelledby="venueLabel">
         <button type="button" id="venueHome" aria-pressed="true">Home ice</button>
@@ -58,7 +58,7 @@
         <line class="line blue" x1="330" y1="-50" x2="330" y2="350"/>
         <line class="line blue" x1="670" y1="-50" x2="670" y2="350"/>
         <line class="line red" x1="500" y1="-50" x2="500" y2="350"/>
-        <circle class="line redthin" cx="500" cy="150" r="96" stroke="var(--hh-ice-line)" style="stroke: var(--hh-ice-line); opacity:.35"/>
+        <circle class="line redthin centre" cx="500" cy="150" r="96"/>
         <circle class="spot" cx="500" cy="150" r="5"/>
         <circle class="dot" cx="410" cy="40" r="6"/><circle class="dot" cx="410" cy="260" r="6"/>
         <circle class="dot" cx="590" cy="40" r="6"/><circle class="dot" cx="590" cy="260" r="6"/>
@@ -92,7 +92,7 @@
       </div>
       <div class="scores">
         <div>
-          <p class="micro" style="margin-bottom: var(--hh-space-3)">Five most likely final scores</p>
+          <p class="micro gap-3">Five most likely final scores</p>
           <ol class="toplist" id="toplist"></ol>
         </div>
         <div class="gridwrap">
@@ -123,7 +123,7 @@
       <p class="muted" id="boardNote"></p>
       <div class="tablewrap"><table class="metrics" id="board"></table></div>
       <div>
-        <p class="micro" style="margin-bottom: var(--hh-space-2)">Running log-loss gap, model minus closing market (below zero = model ahead)</p>
+        <p class="micro gap-2">Running log-loss gap, model minus closing market (below zero = model ahead)</p>
         <svg class="chart" id="chart" viewBox="0 0 640 190" role="img" aria-label="Running log-loss gap between the model and the closing market"></svg>
       </div>
       <p id="boardVerdict"></p>
@@ -135,7 +135,7 @@
       <h2 id="leversTitle">Levers</h2>
       <button type="button" class="ghost" id="resetAll">Reset all levers</button>
     </div>
-    <p class="muted" style="max-width: 68ch" id="leverNote"></p>
+    <p class="muted" id="leverNote"></p>
     <div class="levers">
       <div class="panel" id="leversB"></div>
       <div class="panel" id="leversA"></div>

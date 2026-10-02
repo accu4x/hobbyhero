@@ -453,7 +453,7 @@ def main() -> None:
         "last_game": last_day, "lookback_seasons": list(LOOKBACK),
         "trained_on": list(ALL_SEASONS), "model_hash": model_hash,
         "sklearn": sklearn.__version__,
-        "benchmark": "ESPN closing moneyline, de-vigged (comparison only, never an input)",
+        "benchmark": "Closing market moneyline, de-vigged (comparison only, never an input)",
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(body, separators=(",", ":")), encoding="utf-8")

@@ -182,3 +182,13 @@ footer { display: grid; gap: var(--hh-space-1); font-size: var(--hh-size-small);
   .result { padding: 0; }
   .below { padding: 0 var(--hh-space-4) var(--hh-space-4); }
 }
+
+/* Rules that were style attributes until SPEC-site-edition Phase 1 (2026-10-01). */
+.controls .field.venue { flex: 0 0 auto; }
+.rink .redthin.centre { stroke: var(--hh-ice-line); opacity: .35; }
+.micro.gap-2 { margin-bottom: var(--hh-space-2); }
+.micro.gap-3 { margin-bottom: var(--hh-space-3); }
+#leverNote { max-width: 68ch; }
+.num.ta-right { text-align: right; }
+table.grid th.ta-left { text-align: left; }
+.micro.playoffs { color: var(--hh-red-bright); }
