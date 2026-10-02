@@ -1,0 +1,21 @@
+// Hobby Hero site edition: an assets-only Worker on play.latentmirror.com (SPEC-site-edition.md).
+// Each app on the play host deploys itself on its own path route; there is no shared host project.
+// Build first: python artifact/build.py --site   then: npx wrangler deploy
+// The build needs artifact/snapshot.json, which is made from local data, so deploys run from
+// Dan's machine and not from CI.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "hobby-hero",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": false,
+  "preview_urls": false,
+  // A route, not a custom domain, so other apps keep their own paths on the same host.
+  "routes": [{ "pattern": "play.latentmirror.com/hobby-hero*", "zone_name": "latentmirror.com" }],
+  "assets": {
+    // Holds hobby-hero/ (a route does not strip its path) and _headers.
+    "directory": "./artifact/dist/site",
+    // /hobby-hero redirects to /hobby-hero/, which serves hobby-hero/index.html.
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "none"
+  }
+}

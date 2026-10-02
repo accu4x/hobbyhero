@@ -2,3 +2,4 @@
 # script and breaks on CRLF.
 * text=auto eol=lf
 *.png binary
+*.woff2 binary

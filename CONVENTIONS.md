@@ -55,13 +55,19 @@ MTL". The market appears as numbers labelled *closing market*, never as a named 
 
 - **One self-contained page.** Inline CSS and JS, and `snapshot.json` data embedded or shipped
   alongside. No external fetches (the page cannot reach the NHL API anyway).
+  *Amended 2026-10-01 (`SPEC-site-edition.md`):* that is the artifact edition. The site edition
+  is built from the same source as separate files, with no inline script, no inline style and
+  no `style=` attribute anywhere, and it makes no request to another origin. So never write a
+  `style=` attribute in the template or in markup built by the script; use a class, or set the
+  style from script.
 - ~~**Slate tokens, inlined.** Take the `:root` block from `../design/hobbyhero-tokens-slate.css`
   and derive every colour, face, size, space, radius and duration from it. Dark only, system
   fonts only. Paint the background explicitly.~~ *Superseded 2026-09-24 (v0.2, Dan: "more
   hockey themed"):*
 - **Hobby Hero brand, inlined as tokens.** Navy #192168 to #0f1440, red #AF1E2D, white, and
   ice-blue rink lines. Montserrat (display) and Open Sans (body) from Google Fonts, the one
-  font host the artifact allows, with system fallbacks. Dan's crossed-sticks logo is embedded
+  font host the artifact allows, with system fallbacks (the site edition serves the same font
+  files itself, from `artifact/src/fonts/`). Dan's crossed-sticks logo is embedded
   as a data URI. Dark only; paint the background explicitly. Every colour comes from `:root`
   tokens.
 - **Motion is light and optional.** CSS transitions and small SVG animations only. The page
